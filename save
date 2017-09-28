@@ -1,0 +1,18 @@
+<?php
+    include "connect.php"; //Подключаем БД
+    //делаем запрос на товары этой категории
+    //$query = "select a.name, a.estimated, a.estimated+sum(b.estimated) as sum  from company a left join company b on a.id=b.main_id where a.id=".$_REQUEST['id_m']." group by a.name, a.estimated";
+    $query = "select name, estimated, estimated+sub_est as sum  from company where id=".$_REQUEST['id_m']."";
+    $result = mysql_query($query) or die(mysql_error());
+    // выводим товары полученные по запросу
+    echo "<table><tr>
+    <th>Name</th>
+    <th>Company estimated earnings</th>
+    <th>Estimated earnings all companies</th></tr>";
+    while ($row=mysql_fetch_array($result))
+    {
+        print "<tr><td>".$row['name']."</td><td>".$row['estimated']."</td><td>".$row['sum']."</td></tr>";
+    }
+    echo "</table>";
+    echo "<br><button id='edit_c'>Edit this  company</button>";
+?>
